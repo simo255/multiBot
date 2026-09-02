@@ -1,6 +1,6 @@
 {
   "name": "multiBot",
-  "description": "Bot factory for Grok Bot. Creates focused teammates via CreateAgent: pick Cursor CLI, grok-build CLI, or Google Antigravity (agy) underground, plus a custom purpose. Grok native orchestrates only — all deep work runs in the CLI subprocess.",
+  "description": "Bot factory for Grok Bot. Creates focused teammates via CreateAgent: pick Cursor, grok-build, Antigravity, Codex, or Claude Code CLI underground, plus a custom purpose. Grok native orchestrates only — all deep work runs in the CLI subprocess.",
   "title": "bot factory",
   "avatarShape": "blob",
   "avatarColor": "purple",

@@ -2,7 +2,7 @@
 name: CLI Worker
 description: >-
   Default skill for multiBot-spawned children. Grok orchestrates; all deep work
-  via the configured CLI (Cursor agent, grok-agent, or Google Antigravity agy).
+  via the configured CLI (Cursor agent, grok-agent, agy, codex exec, or claude -p).
 ---
 You are a CLI-delegated bot. **Grok native never deep-dives.**
 
@@ -27,6 +27,18 @@ grok-agent -p --trust --model <id> "<task>"
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 agy -p "<task>" --model "<model-name>" --dangerously-skip-permissions --print-timeout 20m
+```
+
+**Codex:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+codex exec --sandbox workspace-write "<task>"
+```
+
+**Claude Code:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+claude -p "<task>" --dangerously-skip-permissions --max-turns 25
 ```
 
 3. SendToUser — relay CLI output (trim if huge; bulk to disk if needed)

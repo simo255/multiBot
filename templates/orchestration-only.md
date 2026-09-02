@@ -37,6 +37,20 @@ agy -p "<full task prompt>" --model "<model-name>" --dangerously-skip-permission
 ```
 Install: `curl -fsSL https://antigravity.google/cli/install.sh | bash`. See `templates/antigravity-cli.md`.
 
+**OpenAI Codex CLI:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+codex exec --sandbox workspace-write "<full task prompt>"
+```
+Unattended: `--sandbox danger-full-access`. Requires git repo in cwd. See `templates/codex-cli.md`.
+
+**Claude Code CLI:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+claude -p "<full task prompt>" --dangerously-skip-permissions --max-turns 25
+```
+See `templates/claude-code-cli.md`.
+
 Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok and CLI.
 
 ## Default models (override in memory; verify live)
@@ -56,3 +70,19 @@ Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok an
 | default | Gemini 3.5 Flash |
 | smartest | Gemini 3.1 Pro (High) |
 | easy | Gemini 3.5 Flash |
+
+**Codex** (account / `-m` flag):
+
+| Intent | Model |
+|--------|-------|
+| default | latest Codex on plan |
+| smartest | strongest Codex reasoning tier |
+| easy | faster Codex variant |
+
+**Claude Code** (`claude --model` / plan):
+
+| Intent | Model |
+|--------|-------|
+| default | claude-sonnet (latest) |
+| smartest | claude-opus / opus thinking |
+| easy | haiku / fast tier |

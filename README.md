@@ -1,6 +1,16 @@
 # multiBot
 
-**Grok Bot factory** — spawn teammates with **CLI underground** (Cursor `agent`, grok-build `grok-agent`, or Google **Antigravity `agy`**) + a custom purpose. Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
+**Grok Bot factory** — spawn teammates with **CLI underground** + custom purpose:
+
+| CLI | Binary |
+|-----|--------|
+| Cursor | `agent` |
+| grok-build | `grok-agent` |
+| Antigravity | `agy` |
+| OpenAI Codex | `codex exec` |
+| Claude Code | `claude -p` |
+
+Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
 
 Inspired by the eggbot + Cursor-CLI-delegation pattern.
 
@@ -23,7 +33,7 @@ multiBot asks CLI type + purpose → **CreateAgent** → bootstraps the child.
 You → multiBot (Grok orchestration)
          → CreateAgent
          → child bot (purpose + CLI rules in description)
-              → Grok: ack → shell agent | grok-agent | agy → relay
+              → Grok: ack → shell agent | grok-agent | agy | codex | claude → relay
               → CLI: all reasoning & tools
 ```
 
@@ -31,8 +41,10 @@ You → multiBot (Grok orchestration)
 |-------|------|
 | Grok native | Thin coordinator only |
 | Cursor `agent` | Cursor subscription / API key |
-| grok-build `grok-agent` | Grok build CLI quota |
-| Google Antigravity `agy` | Google / Gemini (see agy `/usage`) |
+| grok-build `grok-agent` | Grok build CLI |
+| Google Antigravity `agy` | Google / Gemini |
+| OpenAI Codex `codex exec` | OpenAI / Codex plan |
+| Claude Code `claude -p` | Anthropic / Claude plan |
 
 ## Child bot rules
 
@@ -47,14 +59,18 @@ See [`templates/orchestration-only.md`](templates/orchestration-only.md) — emb
 | `workflows/setup-multibot/` | `/setup-multibot` first-run |
 | `templates/orchestration-only.md` | Grok-thin / CLI-heavy rules |
 | `templates/cli-worker-skill.md` | Default child bot skill |
-| `templates/antigravity-cli.md` | Antigravity install + headless flags |
+| `templates/antigravity-cli.md` | Antigravity `agy -p` |
+| `templates/codex-cli.md` | OpenAI Codex `codex exec` |
+| `templates/claude-code-cli.md` | Claude Code `claude -p` |
 | `install.sh` | Copy workflows to `sand-data/workflows/` |
 
 ## Requirements
 
 - Grok Bot with **CreateAgent** (cursor namespace)
-- Cursor CLI: `curl -fsSL https://cursor.com/install | bash`
-- Antigravity CLI: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
+- Cursor: `curl -fsSL https://cursor.com/install | bash`
+- Antigravity: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
+- Codex: `npm install -g @openai/codex`
+- Claude Code: `npm install -g @anthropic-ai/claude-code`
 - grok-build: `grok-agent` on PATH
 
 ## Contributing

@@ -9,6 +9,7 @@
 | Antigravity | `agy` |
 | OpenAI Codex | `codex exec` |
 | Claude Code | `claude -p` |
+| OpenCode | `opencode run` |
 
 Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
 
@@ -33,7 +34,7 @@ multiBot asks CLI type + purpose → **CreateAgent** → bootstraps the child.
 You → multiBot (Grok orchestration)
          → CreateAgent
          → child bot (purpose + CLI rules in description)
-              → Grok: ack → shell agent | grok-agent | agy | codex | claude → relay
+              → Grok: ack → shell agent | grok-agent | agy | codex | claude | opencode → relay
               → CLI: all reasoning & tools
 ```
 
@@ -45,6 +46,7 @@ You → multiBot (Grok orchestration)
 | Google Antigravity `agy` | Google / Gemini |
 | OpenAI Codex `codex exec` | OpenAI / Codex plan |
 | Claude Code `claude -p` | Anthropic / Claude plan |
+| OpenCode `opencode run` | Any configured provider (Anthropic, OpenAI, Z.AI GLM, …) |
 
 ## Child bot rules
 
@@ -62,6 +64,7 @@ See [`templates/orchestration-only.md`](templates/orchestration-only.md) — emb
 | `templates/antigravity-cli.md` | Antigravity `agy -p` |
 | `templates/codex-cli.md` | OpenAI Codex `codex exec` |
 | `templates/claude-code-cli.md` | Claude Code `claude -p` |
+| `templates/opencode-cli.md` | OpenCode `opencode run` |
 | `install.sh` | Copy workflows to `sand-data/workflows/` |
 
 ## Requirements
@@ -71,6 +74,7 @@ See [`templates/orchestration-only.md`](templates/orchestration-only.md) — emb
 - Antigravity: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
 - Codex: `npm install -g @openai/codex`
 - Claude Code: `npm install -g @anthropic-ai/claude-code`
+- OpenCode: `curl -fsSL https://opencode.ai/install | bash`
 - grok-build: `grok-agent` on PATH
 
 ## Contributing

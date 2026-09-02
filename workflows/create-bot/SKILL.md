@@ -2,7 +2,7 @@
 name: Create Bot
 description: >-
   Use when the user asks multiBot to create, spawn, or design a new Grok Bot
-  with Cursor CLI, grok-build CLI, Google Antigravity, OpenAI Codex, or Claude Code underground plus a custom purpose.
+  with Cursor CLI, grok-build CLI, Google Antigravity, OpenAI Codex, Claude Code, or OpenCode underground plus a custom purpose.
 ---
 Create a focused Grok Bot teammate. Grok native orchestrates only; **all deep work** runs in a CLI subprocess.
 
@@ -10,7 +10,7 @@ Create a focused Grok Bot teammate. Grok native orchestrates only; **all deep wo
 
 Ask (question widget in 1:1; plain numbered options in a group):
 
-1. **CLI backend:** `cursor` (`agent`), `grok-build` (`grok-agent`), `antigravity` (`agy`), `codex` (`codex exec`), or `claude` (`claude -p`)
+1. **CLI backend:** `cursor` (`agent`), `grok-build` (`grok-agent`), `antigravity` (`agy`), `codex` (`codex exec`), `claude` (`claude -p`), or `opencode` (`opencode run`)
 2. **Purpose:** one sentence (e.g. calendar + email, code review, research)
 3. **Name:** short bot name
 4. **Extra constraints** (optional): MCP/plugins, tone, anti-jobs
@@ -18,17 +18,20 @@ Ask (question widget in 1:1; plain numbered options in a group):
 Verify CLI on box:
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
-command -v agent grok-agent agy codex claude
+command -v agent grok-agent agy codex claude opencode
 agent status 2>/dev/null || true
 agy --version 2>/dev/null || true
 codex --version 2>/dev/null || true
 claude --version 2>/dev/null || true
+opencode --version 2>/dev/null || true
+opencode auth list 2>/dev/null || true
 ```
 Install if missing:
 - Cursor: `curl -fsSL https://cursor.com/install | bash`
 - Antigravity: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
 - Codex: `npm install -g @openai/codex`
 - Claude Code: `npm install -g @anthropic-ai/claude-code`
+- OpenCode: `curl -fsSL https://opencode.ai/install | bash` then `opencode auth login`
 
 ## Build the child description
 
@@ -39,7 +42,7 @@ Merge into `description` for CreateAgent:
    - Grok: ack → one CLI shell → relay
    - Never deep-dive on host (no long Read/Task chains)
    - All reasoning inside CLI subprocess
-3. **CLI block** — cursor, grok-build, antigravity, codex, or claude command template + default models
+3. **CLI block** — cursor, grok-build, antigravity, codex, claude, or opencode command template + default models
 4. **Anti-jobs** — what this bot must not do
 
 Keep description under ~12k chars; put long reference paths in memory after create.
@@ -77,6 +80,8 @@ SendToUser: new bot name, id, CLI backend, purpose, and "open its chat to start.
 | "antigravity coding bot" | antigravity | `agy -p` + `--dangerously-skip-permissions` |
 | "codex refactor bot" | codex | `codex exec --sandbox workspace-write`; needs git repo |
 | "claude code review bot" | claude | `claude -p` + `--max-turns` |
+| "opencode bot with glm" | opencode | `opencode run --auto -m zai-coding-plan/glm-5.3-flash` after Z.AI auth |
+| "opencode coding bot" | opencode | `opencode run --auto`; pick provider at auth |
 | "coding bot, composer fast" | cursor | easy intent = composer-2.5-fast in description |
 
 Do not create bots without a clear purpose. Do not create duplicate bots for the same job.

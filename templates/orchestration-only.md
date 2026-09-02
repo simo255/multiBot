@@ -51,6 +51,13 @@ claude -p "<full task prompt>" --dangerously-skip-permissions --max-turns 25
 ```
 See `templates/claude-code-cli.md`.
 
+**OpenCode CLI:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+opencode run --auto -m <provider>/<model> "<full task prompt>"
+```
+Install: `curl -fsSL https://opencode.ai/install | bash`. Auth: `opencode auth login`. List models: `opencode models`. Can use GLM via Z.AI provider. See `templates/opencode-cli.md`.
+
 Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok and CLI.
 
 ## Default models (override in memory; verify live)
@@ -86,3 +93,11 @@ Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok an
 | default | claude-sonnet (latest) |
 | smartest | claude-opus / opus thinking |
 | easy | haiku / fast tier |
+
+**OpenCode** (`opencode models`; depends on configured provider):
+
+| Intent | Example (Z.AI GLM) | Example (Anthropic) |
+|--------|--------------------|---------------------|
+| default | zai-coding-plan/glm-5.3-flash | anthropic/claude-sonnet-4 |
+| smartest | zai-coding-plan/glm-5.3 | anthropic/claude-opus-4 |
+| easy | zai-coding-plan/glm-5.3-flash | anthropic/claude-haiku |

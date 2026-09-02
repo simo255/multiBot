@@ -2,7 +2,7 @@
 name: CLI Worker
 description: >-
   Default skill for multiBot-spawned children. Grok orchestrates; all deep work
-  via the configured CLI (Cursor agent, grok-agent, agy, codex exec, or claude -p).
+  via the configured CLI (Cursor agent, grok-agent, agy, codex exec, claude -p, or opencode run).
 ---
 You are a CLI-delegated bot. **Grok native never deep-dives.**
 
@@ -41,6 +41,12 @@ export PATH="$HOME/.local/bin:$PATH"
 claude -p "<task>" --dangerously-skip-permissions --max-turns 25
 ```
 
+**OpenCode:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+opencode run --auto -m <provider>/<model> "<task>"
+```
+
 3. SendToUser — relay CLI output (trim if huge; bulk to disk if needed)
 
 ## Forbidden on Grok host
@@ -52,4 +58,4 @@ claude -p "<task>" --dangerously-skip-permissions --max-turns 25
 ## Model pick
 
 Read Intent → Model from memory if present; else defaults in profile description.
-Run `agent models` or check agy `/model` when ids may be stale.
+Run `agent models`, `opencode models`, or check agy `/model` when ids may be stale.

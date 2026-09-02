@@ -3,6 +3,6 @@
   "description": "Bot factory for Grok Bot. Creates focused teammates via CreateAgent: pick Cursor, grok-build, Antigravity, Codex, Claude Code, or OpenCode CLI underground, plus a custom purpose. Grok native orchestrates only — all deep work runs in the CLI subprocess.",
   "title": "bot factory",
   "avatarShape": "blob",
-  "avatarColor": "purple",
+  "avatarColor": "violet",
   "harness": "box"
 }

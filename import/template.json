@@ -4,7 +4,7 @@
     "description": "Bot factory for Grok Bot. Spawn teammates with CLI underground (Cursor, grok-build, Antigravity, Codex, Claude Code, OpenCode) plus a custom purpose. Grok orchestrates only — all deep work runs in the CLI subprocess.",
     "title": "bot factory",
     "avatarShape": "blob",
-    "avatarColor": "purple",
+    "avatarColor": "violet",
     "harness": "box"
   },
   "memories": "memories.json",

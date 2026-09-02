@@ -23,7 +23,7 @@ multiBot asks CLI type + purpose → **CreateAgent** → bootstraps the child.
 You → multiBot (Grok orchestration)
          → CreateAgent
          → child bot (purpose + CLI rules in description)
-              → Grok: ack → shell agent/grok-agent → relay
+              → Grok: ack → shell agent | grok-agent | agy → relay
               → CLI: all reasoning & tools
 ```
 

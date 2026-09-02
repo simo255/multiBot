@@ -1,5 +1,7 @@
 # multiBot
 
+**Grok Bot template:** https://x.ai/bot/Ey28W_8uyJPN_DS_M2CvD
+
 **Grok Bot factory** — spawn teammates with **CLI underground** + custom purpose:
 
 | CLI | Binary |
@@ -15,7 +17,11 @@ Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
 
 Inspired by the eggbot + Cursor-CLI-delegation pattern.
 
-## Quick start (Grok Bot box)
+## Quick start
+
+**Easiest:** import the [Grok Bot template](https://x.ai/bot/Ey28W_8uyJPN_DS_M2CvD), then chat **`/setup-multibot`**.
+
+**Manual (Grok Bot box):**
 
 ```bash
 git clone https://github.com/simo255/multiBot.git

@@ -21,5 +21,6 @@
     }
   ],
   "workflows_install": "./install.sh",
-  "repo": "https://github.com/simo255/multiBot"
+  "repo": "https://github.com/simo255/multiBot",
+  "shareUrl": "https://x.ai/bot/Ey28W_8uyJPN_DS_M2CvD"
 }

@@ -1,6 +1,6 @@
 # multiBot
 
-**Grok Bot factory** — spawn teammates with **CLI underground** (Cursor or grok-build) + a custom purpose. Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
+**Grok Bot factory** — spawn teammates with **CLI underground** (Cursor `agent`, grok-build `grok-agent`, or Google **Antigravity `agy`**) + a custom purpose. Grok native **orchestrates only**; all deep work runs in the CLI subprocess.
 
 Inspired by the eggbot + Cursor-CLI-delegation pattern.
 
@@ -30,7 +30,9 @@ You → multiBot (Grok orchestration)
 | Layer | Role |
 |-------|------|
 | Grok native | Thin coordinator only |
-| Cursor `agent` or `grok-agent` | All deep work |
+| Cursor `agent` | Cursor subscription / API key |
+| grok-build `grok-agent` | Grok build CLI quota |
+| Google Antigravity `agy` | Google / Gemini (see agy `/usage`) |
 
 ## Child bot rules
 
@@ -43,14 +45,17 @@ See [`templates/orchestration-only.md`](templates/orchestration-only.md) — emb
 | `import/profile.json` | multiBot profile stub |
 | `workflows/create-bot/` | `/create-bot` skill |
 | `workflows/setup-multibot/` | `/setup-multibot` first-run |
-| `templates/` | Orchestration rules + CLI worker skill for children |
+| `templates/orchestration-only.md` | Grok-thin / CLI-heavy rules |
+| `templates/cli-worker-skill.md` | Default child bot skill |
+| `templates/antigravity-cli.md` | Antigravity install + headless flags |
 | `install.sh` | Copy workflows to `sand-data/workflows/` |
 
 ## Requirements
 
 - Grok Bot with **CreateAgent** (cursor namespace)
 - Cursor CLI: `curl -fsSL https://cursor.com/install | bash`
-- Optional: `grok-agent` for grok-build children
+- Antigravity CLI: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
+- grok-build: `grok-agent` on PATH
 
 ## Contributing
 

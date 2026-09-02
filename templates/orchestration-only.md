@@ -29,11 +29,19 @@ agent -p --trust --model <model-id> "<full task prompt including context>"
 export PATH="$HOME/.local/bin:$PATH"
 grok-agent -p --trust --model <model-id> "<full task prompt>"
 ```
-(Use `grok-agent` or the grok-build binary installed on the box; verify with `command -v grok-agent agent`.)
+
+**Google Antigravity CLI:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+agy -p "<full task prompt>" --model "<model-name>" --dangerously-skip-permissions --print-timeout 20m
+```
+Install: `curl -fsSL https://antigravity.google/cli/install.sh | bash`. See `templates/antigravity-cli.md`.
 
 Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok and CLI.
 
-## Default Cursor routes (override in memory after setup)
+## Default models (override in memory; verify live)
+
+**Cursor** (`agent models`):
 
 | Intent | Model |
 |--------|-------|
@@ -41,4 +49,10 @@ Pass the **entire** job in the CLI prompt. Do not split reasoning across Grok an
 | smartest | claude-fable-5-1-thinking-high |
 | easy | composer-2.5-fast |
 
-Run `agent models` live before hardcoding ids.
+**Antigravity** (`/model` in interactive agy):
+
+| Intent | Model |
+|--------|-------|
+| default | Gemini 3.5 Flash |
+| smartest | Gemini 3.1 Pro (High) |
+| easy | Gemini 3.5 Flash |

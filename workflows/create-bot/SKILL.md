@@ -2,7 +2,7 @@
 name: Create Bot
 description: >-
   Use when the user asks multiBot to create, spawn, or design a new Grok Bot
-  with Cursor CLI or grok-build CLI underground plus a custom purpose.
+  with Cursor CLI, grok-build CLI, or Google Antigravity CLI underground plus a custom purpose.
 ---
 Create a focused Grok Bot teammate. Grok native orchestrates only; **all deep work** runs in a CLI subprocess.
 
@@ -10,7 +10,7 @@ Create a focused Grok Bot teammate. Grok native orchestrates only; **all deep wo
 
 Ask (question widget in 1:1; plain numbered options in a group):
 
-1. **CLI backend:** `cursor` (Cursor `agent`) or `grok-build` (`grok-agent`)
+1. **CLI backend:** `cursor` (`agent`), `grok-build` (`grok-agent`), or `antigravity` (`agy`)
 2. **Purpose:** one sentence (e.g. calendar + email, code review, research)
 3. **Name:** short bot name
 4. **Extra constraints** (optional): MCP/plugins, tone, anti-jobs
@@ -18,10 +18,13 @@ Ask (question widget in 1:1; plain numbered options in a group):
 Verify CLI on box:
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
-command -v agent grok-agent
+command -v agent grok-agent agy
 agent status 2>/dev/null || true
+agy --version 2>/dev/null || true
 ```
-If Cursor CLI missing: `curl -fsSL https://cursor.com/install | bash`
+Install if missing:
+- Cursor: `curl -fsSL https://cursor.com/install | bash`
+- Antigravity: `curl -fsSL https://antigravity.google/cli/install.sh | bash`
 
 ## Build the child description
 
@@ -32,7 +35,7 @@ Merge into `description` for CreateAgent:
    - Grok: ack → one CLI shell → relay
    - Never deep-dive on host (no long Read/Task chains)
    - All reasoning inside CLI subprocess
-3. **CLI block** — cursor or grok-build command template + default model ids
+3. **CLI block** — cursor, grok-build, or antigravity command template + default models
 4. **Anti-jobs** — what this bot must not do
 
 Keep description under ~12k chars; put long reference paths in memory after create.
@@ -67,6 +70,7 @@ SendToUser: new bot name, id, CLI backend, purpose, and "open its chat to start.
 |-----------|-----|-------|
 | "cursor bot for my calendar" | cursor | purpose = calendar; suggest Gmail/Calendar MCP in follow-up |
 | "grok-build email assistant" | grok-build | purpose = email triage |
+| "antigravity coding bot" | antigravity | `agy -p` + `--dangerously-skip-permissions` |
 | "coding bot, composer fast" | cursor | easy intent = composer-2.5-fast in description |
 
 Do not create bots without a clear purpose. Do not create duplicate bots for the same job.

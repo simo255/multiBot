@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+# multiBot — route tasks to Cursor CLI models by intent (no Grok Bot).
+set -euo pipefail
+
+CONFIG_DIR="${MULTIBOT_CONFIG_DIR:-$HOME/.config/multibot}"
+ROUTES_FILE="$CONFIG_DIR/routes.json"
+AGENT_BIN="${CURSOR_AGENT_BIN:-}"
+
+_self() {
+  if [[ -n "${MULTIBOT_HOME:-}" && -x "$MULTIBOT_HOME/multibot" ]]; then
+    printf '%s' "$MULTIBOT_HOME/multibot"
+    return 0
+  fi
+  local link dest
+  link="$(command -v multibot 2>/dev/null || true)"
+  if [[ -n "$link" ]]; then
+    dest="$(readlink -f "$link" 2>/dev/null || printf '%s' "$link")"
+    printf '%s' "$dest"
+    return 0
+  fi
+  if [[ -x "${BASH_SOURCE[0]}" ]]; then
+    printf '%s' "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/multibot"
+  fi
+}
+
+_setup_script() {
+  local home root
+  home="$(dirname "$(_self)")"
+  root="$(dirname "$home")"
+  local candidate
+  for candidate in \
+    "$home/setup.sh" \
+    "$home/lib/setup.sh" \
+    "$root/lib/setup.sh" \
+    "${MULTIBOT_HOME:+$MULTIBOT_HOME/setup.sh}"; do
+    if [[ -n "$candidate" && -x "$candidate" ]]; then
+      printf '%s' "$candidate"
+      return 0
+    fi
+  done
+}
+
+usage() {
+  cat <<'EOF'
+Usage: multibot [options] [intent] [prompt...]
+
+Pick a Cursor CLI model by intent and run agent.
+
+Options:
+  --setup             Install / configure (Cursor CLI + routes.json)
+  --list-intents      Show configured intents
+  --list-models       List live models (agent --list-models)
+  --intent NAME       Intent key (default, smartest, easy, …)
+  -p, --print         agent -p (script output)
+  --trust             agent --trust (headless tools)
+  -f, --force         agent -f
+  --mode MODE         agent --mode (plan|ask)
+  --config-dir PATH   Override config directory
+  -h, --help          Help
+
+Examples:
+  multibot "explain this repo"
+  multibot easy "one-line summary"
+  multibot smartest -p --trust "review this patch"
+
+Install (first time):
+  curl -fsSL https://raw.githubusercontent.com/simo255/multiBot/main/install.sh | bash
+EOF
+}
+
+die() { printf 'multibot: error: %s\n' "$*" >&2; exit 1; }
+
+find_agent() {
+  if [[ -n "$AGENT_BIN" && -x "$AGENT_BIN" ]]; then return 0; fi
+  if command -v agent >/dev/null 2>&1; then AGENT_BIN="$(command -v agent)"; return 0; fi
+  if [[ -x "$HOME/.local/bin/agent" ]]; then
+    AGENT_BIN="$HOME/.local/bin/agent"
+    export PATH="$HOME/.local/bin:$PATH"
+    return 0
+  fi
+  return 1
+}
+
+resolve_intent() {
+  local intent="$1"
+  python3 - <<PY
+import json, sys
+from pathlib import Path
+p = Path("$ROUTES_FILE")
+if not p.is_file():
+    sys.stderr.write("missing routes — run: multibot --setup\\n")
+    sys.exit(1)
+data = json.loads(p.read_text())
+routes = data.get("routes") or {}
+intent = "$intent".strip().lower()
+if not intent:
+    intent = data.get("default_intent") or "default"
+if intent not in routes:
+    sys.stderr.write(f"unknown intent: {intent}\\nknown: {', '.join(sorted(routes))}\\n")
+    sys.exit(1)
+print(routes[intent])
+PY
+}
+
+INTENT=""
+PRINT=0
+TRUST=0
+FORCE=0
+MODE=""
+PROMPT=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --setup)
+      setup="$(_setup_script)"
+      [[ -n "$setup" && -x "$setup" ]] || die "setup script not found — re-run install.sh"
+      exec "$setup" "${@:2}"
+      ;;
+    --list-intents)
+      [[ -f "$ROUTES_FILE" ]] || die "missing $ROUTES_FILE — run: multibot --setup"
+      python3 -c "import json; r=json.load(open('$ROUTES_FILE')).get('routes',{}); [print(f'  {k:<12} {v}') for k,v in r.items()]"
+      exit 0
+      ;;
+    --list-models)
+      find_agent || die "agent not found — run multibot --setup"
+      exec "$AGENT_BIN" --list-models
+      ;;
+    --intent) INTENT="$2"; shift 2 ;;
+    --config-dir) CONFIG_DIR="$2"; ROUTES_FILE="$CONFIG_DIR/routes.json"; shift 2 ;;
+    -p|--print) PRINT=1; shift ;;
+    --trust) TRUST=1; shift ;;
+    -f|--force) FORCE=1; shift ;;
+    --mode) MODE="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    --) shift; PROMPT+=("$@"); break ;;
+    -*)
+      die "unknown option: $1"
+      ;;
+    *)
+      if [[ -z "$INTENT" && -f "$ROUTES_FILE" ]]; then
+        if python3 -c "import json; r=json.load(open('$ROUTES_FILE')).get('routes',{}); exit(0 if '$1' in r else 1)" 2>/dev/null; then
+          INTENT="$1"
+          shift
+          continue
+        fi
+      fi
+      PROMPT+=("$1")
+      shift
+      ;;
+  esac
+done
+
+find_agent || die "agent not found — run: multibot --setup"
+[[ -f "$ROUTES_FILE" ]] || die "missing $ROUTES_FILE — run: multibot --setup"
+
+if [[ -z "$INTENT" ]]; then
+  INTENT="$(python3 -c "import json; print(json.load(open('$ROUTES_FILE')).get('default_intent','default'))")"
+fi
+
+MODEL_ID="$(resolve_intent "$INTENT")"
+ARGS=("$AGENT_BIN" --model "$MODEL_ID")
+[[ "$PRINT" -eq 1 ]] && ARGS+=(-p)
+[[ "$TRUST" -eq 1 ]] && ARGS+=(--trust)
+[[ "$FORCE" -eq 1 ]] && ARGS+=(-f)
+[[ -n "$MODE" ]] && ARGS+=(--mode "$MODE")
+
+if [[ ${#PROMPT[@]} -eq 0 ]]; then
+  exec "${ARGS[@]}"
+fi
+exec "${ARGS[@]}" "${PROMPT[@]}"

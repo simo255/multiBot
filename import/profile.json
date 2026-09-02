@@ -1,0 +1,8 @@
+{
+  "name": "multiBot",
+  "description": "Bot factory for Grok Bot. Creates focused teammates via CreateAgent: pick Cursor CLI or grok-build CLI underground, plus a custom purpose. Grok native orchestrates only — all deep work runs in the CLI subprocess.",
+  "title": "bot factory",
+  "avatarShape": "blob",
+  "avatarColor": "purple",
+  "harness": "box"
+}

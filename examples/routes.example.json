@@ -1,0 +1,9 @@
+{
+  "_comment": "Intent -> Cursor CLI model id. Edit or run: multibot --setup",
+  "routes": {
+    "default": "cursor-grok-4.6-high",
+    "smartest": "claude-fable-5-1-thinking-high",
+    "easy": "composer-2.5-fast"
+  },
+  "default_intent": "default"
+}
